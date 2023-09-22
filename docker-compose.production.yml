@@ -1,0 +1,33 @@
+version: '3'
+
+volumes:
+  bd_kittygram_production:
+  static_production:
+  media_production:
+
+services:
+  db:
+    image: postgres:13.10
+    env_file: .env
+    volumes:
+      - bd_kittygram_production:/var/lib/postgresql/data
+  backend:
+    image: danilkas234/kittygram_backend
+    env_file: .env
+    volumes:
+      - media_production:/app/media
+      - static_production:/backend_static
+  frontend:
+    env_file: .env
+    image: danilkas234/kittygram_frontend
+    command: cp -r /app/build/. /static/
+    volumes:
+      - static_production:/static
+  gateway:
+    image: danilkas234/kittygram_gateway
+    env_file: .env
+    ports:
+      - 9000:80
+    volumes:
+      - media_production:/media
+      - static_production:/staticfiles/
