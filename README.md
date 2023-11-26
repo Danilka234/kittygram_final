@@ -57,3 +57,5 @@ sudo apt install docker.io
     ```
     - Создать суперпользователя Django:
     ```
+    python3 manage.py createsuperuser
+    ```
